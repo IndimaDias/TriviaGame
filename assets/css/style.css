@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Russo+One');
+
+body{
+    background-image: url("http://inn.spb.ru/images/500/DSC100532578.jpg");
+    background-size: cover;
+}
+
+#headerTitle{
+    font-size: 80px;
+    color :white;
+    font-family : 'Russo One', sans-serif;
+    text-align: center;
+    margin: 30px 0;
+    text-shadow: 3px 3px rgb(140, 208, 240) ;
+}
+
+#startGame{
+    text-align: center;
+    margin: 100px;
+}
+#play{
+    height: 100px;
+    width: 300px;
+    background-color: aliceblue;
+    opacity: 0.2;
+    border-radius: 10px;
+    font-family: 'Russo One', sans-serif;
+    font-size: 80px;
+}
