@@ -1,10 +1,13 @@
+/* import font Russo One from google fonts */
 @import url('https://fonts.googleapis.com/css?family=Russo+One');
 
+/* sytle for the body */
 body{
     background-image: url("http://inn.spb.ru/images/500/DSC100532578.jpg");
     background-size: cover;
 }
 
+/* style for the main heading */
 #headerTitle{
     font-size: 80px;
     color :white;
@@ -14,16 +17,60 @@ body{
     text-shadow: 3px 3px rgb(140, 208, 240) ;
 }
 
+/* style for the section containing the play button */
 #startGame{
     text-align: center;
     margin: 100px;
 }
+
+/* style for the Play button */
 #play{
     height: 100px;
     width: 300px;
-    background-color: aliceblue;
-    opacity: 0.2;
+    background-color: rgb(230, 242, 252, 0.2);
+    color: rgb(51, 50, 50);
+    font-size: 80px;
+}
+
+/* Style for the section containing question and answers */
+#qContainer{
+    position : absolute;
+    width : 50%;
+    margin: 0 25%;
+    background-color: rgb(230, 242, 252, 0.2);
+    border : grey solid;
+    border-radius: 8px;
+    text-align: center;
+    color :red;
+}
+
+/* style for text 'Time Remaining' */
+#timeLabel{
+    height:20px;
+    padding : 20px;
+}
+
+/* Style for the heading with the question */
+#question{
+    background: linear-gradient(to left, #9900cc 0%, #ff5050 100%);
+    width: 80%;
+    margin: 0 10% 2% 10%;
+    height: 40px;
+    padding: 5px;
+   
+}
+
+/* style class for buttons with answers */
+.answerButton{
+    height: 30px;
+    width: 60%;
+    margin : 15px;
+    background: linear-gradient(to left, #ff3300 0%, #ffff00 100%);
+  
+}
+
+/* common class for all the buttons formatting */
+.buttonFormat{
     border-radius: 10px;
     font-family: 'Russo One', sans-serif;
-    font-size: 80px;
 }

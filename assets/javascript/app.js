@@ -1,6 +1,7 @@
 $(document).ready(function() {
-    debugger;
+    
     console.log("ready");
+$("#qContainer").hide();
 // Array of jobjects with questions and answers
 
 var questionArray = [{Question : "What is the closest planet to the Sun?" ,
@@ -58,6 +59,7 @@ var questionArray = [{Question : "What is the closest planet to the Sun?" ,
 
 var arrayIndex = 0;
 
+/*--------------------------------This function reads the next question from the array--------------------------------------- */ 
 
 function nextQuestion(){
     if (arrayIndex < questionArray.length) {
@@ -65,13 +67,15 @@ function nextQuestion(){
     }
     
     
-}; 
+}; //end function nextQuestion
 
+/*-----------------------------------------------------------------------------------------------------------------*/
     $("#play").click(function(){
         // debugger;
-        $("#play").hide();
+        $("#play").hide(); // hide the play button
+        $("#qContainer").show(); //show the container with questions and answers
         nextQuestion();
-        arrayIndex++;
+        arrayIndex++; //set the array index to the next value 
     });
 
 
