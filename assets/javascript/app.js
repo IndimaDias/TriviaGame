@@ -4,6 +4,11 @@ $(document).ready(function() {
 $("#qContainer").hide();
 // Array of jobjects with questions and answers
 
+var intervalId ; //variable for setInterval
+var timeoutId  ; //variable for the timeOut
+var clockRunning = false;
+var time = 30; // timer set to 30 seconds 
+
 var questionArray = [{Question : "What is the closest planet to the Sun?" ,
                       answer1 : "Jupiter" , answer2 : "Titan",
                       answer3 : "Earth", correctAnswer : "Mercury" },
@@ -62,21 +67,97 @@ var arrayIndex = 0;
 /*--------------------------------This function reads the next question from the array--------------------------------------- */ 
 
 function nextQuestion(){
+  debugger;
     if (arrayIndex < questionArray.length) {
-        console.log(questionArray[arrayIndex]);
+          //read question from the object and assign to the question section
+        $("#question").text(questionArray[arrayIndex].Question);
+
+        var tempArray = questionArray[arrayIndex]; // coppy object to a temporary variable
+
+        delete tempArray.Question; // delete the question property from the object 
+
+        // get remaining property names and have in an array in a random order 
+        var propertyArray = (Object.getOwnPropertyNames(tempArray).sort(function(a, b){return 0.5 - Math.random()}));
+        
+        //assign values to buttons with class .answerButton 
+        $(".answerButton").each(function(i, elm){
+        
+          var propertyVal = propertyArray.shift();
+          $(elm).attr("data-name",propertyVal); 
+          $(elm).text(Object.getOwnPropertyDescriptor(tempArray,propertyVal).value);
+          
+        });
+
+
     }
     
     
 }; //end function nextQuestion
 
+/*----------------------------------This function will create the timer-------------------------------------------- */
+function createTimer(){
+  debugger;
+  if (!clockRunning) {
+      intervalId = setInterval(count,1000);
+      timeoutId = setTimeout(checkArray,30000);
+      console.log(intervalId);
+      clockRunning = true;
+    }
+
+  
+} ; //end createTimer
+
+/*--------------------------------------This function will display the timer------------------------------------- */
+
+function count() {
+  time--;
+  var newTime = timeConverter(time);
+  $("#timer").text(newTime);  
+
+
+}
+
+/*--------------------------------------------------------------------------------------------------------------- */
+
+function timeConverter(t) {
+
+  //  Takes the current time in seconds and convert it to minutes and seconds (mm:ss).
+  var minutes = Math.floor(t / 60);
+  var seconds = t - (minutes * 60);
+
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+
+  if (minutes === 0) {
+    minutes = "00";
+  }
+
+  else if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+
+  return minutes + ":" + seconds;
+}
+
+/*---------------------------------------------------------------------------------------------------------------- */
+function checkArray(){
+  clearInterval(intervalId);
+  clearTimeout(timeoutId);
+  time = 30;
+  console.log("timeout");
+}
 /*-----------------------------------------------------------------------------------------------------------------*/
     $("#play").click(function(){
         // debugger;
         $("#play").hide(); // hide the play button
+      
         $("#qContainer").show(); //show the container with questions and answers
+        createTimer();
         nextQuestion();
         arrayIndex++; //set the array index to the next value 
     });
+
 
 
 })

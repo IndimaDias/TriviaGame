@@ -48,6 +48,8 @@ body{
 #timeLabel{
     height:20px;
     padding : 20px;
+    font-size : 25px;
+    font-family: 'Russo One', sans-serif;
 }
 
 /* Style for the heading with the question */
