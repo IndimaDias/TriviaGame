@@ -59,6 +59,7 @@ body{
     margin: 0 10% 2% 10%;
     height: 40px;
     padding: 5px;
+    color: black;
    
 }
 
@@ -107,4 +108,30 @@ body{
     width: fit-content;
     margin: auto;
     padding: 20px;
+}
+
+#finalWindow{
+    position: absolute;
+    z-index: 1;
+    display: none;
+    background: linear-gradient(to right, #990099 0%, #0033cc 100%);
+    top :30%;
+    width: 60%;
+    text-align: center;
+    border-radius: 8px;
+    opacity: 0.8;
+    margin: 0 20%;
+}
+
+.heading{
+    font-family: 'Russo One', sans-serif;
+    font-size: 20px;
+    padding : 20px;
+}
+
+#btnRestart{
+    height: 30px;
+    /* width: 60%; */
+    margin : 15px;
+    background: linear-gradient(to right, #e91e63 0%, #ffd666 100%);    
 }

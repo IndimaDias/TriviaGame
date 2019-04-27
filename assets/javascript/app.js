@@ -1,7 +1,8 @@
 $(document).ready(function() {
     
-    console.log("ready");
+
 $("#qContainer").hide();
+$("#finalWindow").hide();
 // Array of jobjects with questions and answers
 
 var intervalId ; //variable for setInterval
@@ -10,6 +11,10 @@ var nextTimeout ; // timeout for next question generating
 var clockRunning = false;
 var time = 30; // timer set to 30 seconds 
 var alertDiv = $("#alert");
+var totalCorrect = 0;
+var totalWrong = 0;
+var totalUnAnswered = 0;
+
 
 var questionArray = [{Question : "What is the closest planet to the Sun?" ,
                       answer1 : "Jupiter" , answer2 : "Titan",
@@ -61,7 +66,7 @@ var questionArray = [{Question : "What is the closest planet to the Sun?" ,
 
                     {Question : " What is the name of Saturn’s largest moon?" ,
                       answer1 : "Europa" , answer2 : 'Triton',
-                      answer3 : "Charon", correctAnswer : "Titan", correctAns : 2 }                   
+                      answer3 : "Charon", correctAnswer : "Titan" }                   
                     ];
 
 var arrayIndex = 0;
@@ -70,16 +75,20 @@ alertDiv.hide();
 /*--------------------------------This function reads the next question from the array--------------------------------------- */ 
 
 function nextQuestion(){
+  // debugger;
+  var tempArray ="";
+  var propertyArray = "";
+
     if (arrayIndex < questionArray.length) {
           //read question from the object and assign to the question section
         $("#question").text(questionArray[arrayIndex].Question);
 
-        var tempArray = questionArray[arrayIndex]; // coppy object to a temporary variable
+        tempArray = questionArray[arrayIndex]; // coppy object to a temporary variable
 
         delete tempArray.Question; // delete the question property from the object 
 
         // get remaining property names and have in an array in a random order 
-        var propertyArray = (Object.getOwnPropertyNames(tempArray).sort(function(a, b){return 0.5 - Math.random()}));
+        propertyArray = (Object.getOwnPropertyNames(tempArray).sort(function(a, b){return 0.5 - Math.random()}));
         
         //assign values to buttons with class .answerButton 
         $(".answerButton").each(function(i, elm){
@@ -95,6 +104,7 @@ function nextQuestion(){
     }
     else{
       //populate final screen
+      finalWindow();
     }
     
 }; //end function nextQuestion
@@ -105,7 +115,7 @@ function createTimer(){
   // if (!clockRunning) {
       intervalId = setInterval(count,1000);
       timeoutId = setTimeout(checkArray,30000);
-      console.log(intervalId);
+
       clockRunning = true;
     // }
 
@@ -149,12 +159,19 @@ function timeConverter(t) {
 function checkArray(){
 
   clearTimer();
+  totalUnAnswered++;
+  $(".alertMessage").detach();
+
   var alertMessage = $("<p>");
   alertMessage.text("Out of Time, Correct answer is " + $(".answerButton[value = correctAnswer]").text());
   alertMessage.addClass("alertMessage");
-  $("#alertSymbol").css('display','none');
-  console.log(alertMessage.text());
+  // $("#alertSymbol").css('display','none');
+  $("#alertSymbol").hide();
+  // $("timeOutMsg").show();
+
   alertDiv.append(alertMessage);
+  // alertMessage.text(alertMessage);
+  // alertMessage.show();
   alertDiv.show();
   $(".answerButton[value = correctAnswer]").css({"border-color":"Green" , "border-width" : "5px"});
   nextQuestionTimer();
@@ -164,34 +181,38 @@ function checkArray(){
 
 /*-------------------------------------------this function will clear all the timers------------------------------ */
 function clearTimer(){
+  debugger;
   clearInterval(intervalId);
   clearTimeout(timeoutId);
   time = 30;
-  console.log("timeout");
+
 } //end function clearTimer
 
 /*---------------------This function will populate the alter symbol based on the paramerter valiue------------------- */
 function ansAlert(altSymbol){
-  debugger;
+debugger;
   var alertImage = $("#alertSymbol");
+  // alertImage.css("visibility", "visible");
 
   if (altSymbol === 'C'){ // correct answer
     
-    console.log(alertImage.attr('src'));
+    
     alertImage.attr("src","https://png2.kisspng.com/sh/b2c66ce9415cbfb6db545ba6dff5daba/L0KzQYm3U8AzN6d8iZH0aYP2gLBuTgN6dZN0hJ9yY3BxPbPzlfUufJpog598eX3lf720VfE6QWpmUaNtOEXkQYS1VMM5OmoAUak6NUKzQIK9UME4QGk7SpD5bne=/kisspng-symbol-icon-blue-tick-symbol-5a999a91d85a13.4382999715200160178862.png"); 
   }
   else { // incorrect answer
     alertImage.attr("src","https://png2.kisspng.com/sh/836df75f93f4d860e96e369d83356764/L0KzQYm3V8A0N6NtR91yc4Pzfri0gBhzcaR5gdN3LXP1f8T6TgN6dZN0hJ9sb33zhcXskr1qa5Dzi59qbXX1ebTojr1zbZUyTdQ8Y0HoSbaCUcdlbmczTqUDMEW6Qoa4VcMxPmc7Tqc9NUm4SXB3jvc=/kisspng-christian-cross-symbol-computer-icons-american-red-5b3c1e9e917df6.6380572515306666545959.png"); 
   }
-
+  $("#timer").text("00:00");
+  // $("#timeOutMsg").hide();
+  $(".alertMessage").detach();
+  alertImage.show();
   alertDiv.show();
   nextQuestionTimer();
   
 } // end function ansAlert
 
 /*--------------------------------------this function will create timer to populate the next question ------------ */
-function nextQuestionTimer(){
-  console.log("next Timer");
+function nextQuestionTimer(){  
   
   nextTimeout = setTimeout(nextQuesTimeout,3000);
   
@@ -200,38 +221,69 @@ function nextQuestionTimer(){
 /*-------------------------------------Function executed after timeout-------------------------------------------- */
 function nextQuesTimeout(){
   alertDiv.hide();
+  $(".answerButton").css({"border-color":"grey" , "border-width" : "1px"});
   clearTimeout(nextTimeout);
   createTimer();
   nextQuestion();
   arrayIndex++;
 }
+
+/*------------------------------------Funtion will call the section with final results--------------------------*/
+function finalWindow(){
+  
+  clearTimer();
+  $("#qContainer").hide();
+  var resultDiv = $("#finalWindow");
+  
+
+  $("#totalC").text(totalCorrect);
+  $("#totalI").text(totalWrong);
+  $("#totalU").text(totalUnAnswered);
+  
+  resultDiv.show();
+
+}
+
+/*----------------------------------------function to reset play-------------------------------------------------- */
+
+function startPlay(){
+  $("#play").hide(); // hide the play button
+    
+  $("#qContainer").show(); //show the container with questions and answers
+  createTimer();
+  nextQuestion();
+  arrayIndex++; //set the array index to the next value 
+}
 /*---------------------------------------function on click of the Play button--------------------------------------*/
   $("#play").click(function(){
       
-      $("#play").hide(); // hide the play button
-    
-      $("#qContainer").show(); //show the container with questions and answers
-      createTimer();
-      nextQuestion();
-      arrayIndex++; //set the array index to the next value 
+    startPlay();
+
   });
 
 /**------------------------------------function on click answer buttons------------------------------------------- */
   $(".answerButton").click (function(){
-    
+    debugger;
     if ($(this).data('name') === 'correctAnswer') {
       $(this).css("border-color", "red");
+      totalCorrect++;
       clearTimer();
-      ansAlert('C');
-      console.log("Correct");
+      ansAlert('C');      
     }
     else {
       
       $(".answerButton[value = correctAnswer]").css({"border-color":"Green" , "border-width" : "5px"});
+      totalWrong++;
       clearTimer();
-      ansAlert('W');
-      console.log("Incorrect");
+      ansAlert('W');      
+      
     }
   });
 
+  /*------------------------------------function on click play again button--------------------------------------- */
+  $("#btnRestart").click(function(){
+    arrayIndex = 0;
+    $("#finalWindow").hide();
+    startPlay();
+  })
 })
