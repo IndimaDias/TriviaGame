@@ -8,6 +8,7 @@ var intervalId ; //variable for setInterval
 var timeoutId  ; //variable for the timeOut
 var clockRunning = false;
 var time = 30; // timer set to 30 seconds 
+var alertDiv = $("#alert");
 
 var questionArray = [{Question : "What is the closest planet to the Sun?" ,
                       answer1 : "Jupiter" , answer2 : "Titan",
@@ -64,10 +65,10 @@ var questionArray = [{Question : "What is the closest planet to the Sun?" ,
 
 var arrayIndex = 0;
 
+alertDiv.hide();
 /*--------------------------------This function reads the next question from the array--------------------------------------- */ 
 
 function nextQuestion(){
-  debugger;
     if (arrayIndex < questionArray.length) {
           //read question from the object and assign to the question section
         $("#question").text(questionArray[arrayIndex].Question);
@@ -83,7 +84,8 @@ function nextQuestion(){
         $(".answerButton").each(function(i, elm){
         
           var propertyVal = propertyArray.shift();
-          $(elm).attr("data-name",propertyVal); 
+          $(elm).data('name' , propertyVal); 
+          $(elm).val(propertyVal);
           $(elm).text(Object.getOwnPropertyDescriptor(tempArray,propertyVal).value);
           
         });
@@ -96,7 +98,7 @@ function nextQuestion(){
 
 /*----------------------------------This function will create the timer-------------------------------------------- */
 function createTimer(){
-  debugger;
+  
   if (!clockRunning) {
       intervalId = setInterval(count,1000);
       timeoutId = setTimeout(checkArray,30000);
@@ -140,24 +142,58 @@ function timeConverter(t) {
   return minutes + ":" + seconds;
 }
 
-/*---------------------------------------------------------------------------------------------------------------- */
+/*--------------------------------------------This funciton will be excuted at the timeout------------------------- */
 function checkArray(){
   clearInterval(intervalId);
   clearTimeout(timeoutId);
   time = 30;
   console.log("timeout");
+} //end function checkArray
+
+/*---------------------------------------------------------------------------------------------------------------- */
+function AnsAlert(altSymbol){
+  debugger;
+  var alertImage = $("#alertSymbol");
+
+  if (altSymbol === 'C'){
+    
+    console.log(alertImage.attr('src'));
+    alertImage.attr("src","https://png2.kisspng.com/sh/b2c66ce9415cbfb6db545ba6dff5daba/L0KzQYm3U8AzN6d8iZH0aYP2gLBuTgN6dZN0hJ9yY3BxPbPzlfUufJpog598eX3lf720VfE6QWpmUaNtOEXkQYS1VMM5OmoAUak6NUKzQIK9UME4QGk7SpD5bne=/kisspng-symbol-icon-blue-tick-symbol-5a999a91d85a13.4382999715200160178862.png"); 
+  }
+  else {
+    alertImage.attr("src","https://png2.kisspng.com/sh/836df75f93f4d860e96e369d83356764/L0KzQYm3V8A0N6NtR91yc4Pzfri0gBhzcaR5gdN3LXP1f8T6TgN6dZN0hJ9sb33zhcXskr1qa5Dzi59qbXX1ebTojr1zbZUyTdQ8Y0HoSbaCUcdlbmczTqUDMEW6Qoa4VcMxPmc7Tqc9NUm4SXB3jvc=/kisspng-christian-cross-symbol-computer-icons-american-red-5b3c1e9e917df6.6380572515306666545959.png"); 
+  }
+
+  alertDiv.show();
+  
 }
-/*-----------------------------------------------------------------------------------------------------------------*/
-    $("#play").click(function(){
-        // debugger;
-        $("#play").hide(); // hide the play button
+
+/*---------------------------------------function on click of the Play button--------------------------------------*/
+  $("#play").click(function(){
       
-        $("#qContainer").show(); //show the container with questions and answers
-        createTimer();
-        nextQuestion();
-        arrayIndex++; //set the array index to the next value 
-    });
+      $("#play").hide(); // hide the play button
+    
+      $("#qContainer").show(); //show the container with questions and answers
+      createTimer();
+      nextQuestion();
+      arrayIndex++; //set the array index to the next value 
+  });
 
-
+/**------------------------------------function on click answer buttons------------------------------------------- */
+  $(".answerButton").click (function(){
+    
+    if ($(this).data('name') === 'correctAnswer') {
+      $(this).css("border-color", "red");
+      checkArray();
+      AnsAlert('C');
+      console.log("Correct");
+    }
+    else {
+      
+      $(".answerButton[value = correctAnswer]").css({"border-color":"Green" , "border-width" : "5px"});
+      AnsAlert('W');
+      console.log("Incorrect");
+    }
+  });
 
 })

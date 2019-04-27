@@ -68,6 +68,7 @@ body{
     width: 60%;
     margin : 15px;
     background: linear-gradient(to left, #ff3300 0%, #ffff00 100%);
+    /* background-color: #9900cc; */
   
 }
 
@@ -75,4 +76,20 @@ body{
 .buttonFormat{
     border-radius: 10px;
     font-family: 'Russo One', sans-serif;
+}
+
+.imgAlert{
+    position: absolute;
+    z-index: 1;
+    display: none;
+    background: transparent;
+    top :30%;
+    left : 45%;
+}
+
+#alertSymbol{
+    width: 150px;
+    height: 150px;
+    background: transparent;
+
 }
