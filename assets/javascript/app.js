@@ -1,20 +1,21 @@
 $(document).ready(function() {
     
+//hide sections with questions and answers and final result window at page loading 
 
 $("#qContainer").hide();
 $("#finalWindow").hide();
-// Array of jobjects with questions and answers
 
+var alertDiv = $("#alert");
 var intervalId ; //variable for setInterval
 var timeoutId  ; //variable for the timeOut
 var nextTimeout ; // timeout for next question generating 
 var clockRunning = false;
 var time = 30; // timer set to 30 seconds 
-var alertDiv = $("#alert");
-var totalCorrect = 0;
-var totalWrong = 0;
-var totalUnAnswered = 0;
+var totalCorrect = 0; // variable for total correct answers
+var totalWrong = 0; // variable for total incorrect answers
+var totalUnAnswered = 0; // variable for total unanswered questions
 
+// Array of jobjects with questions and answers
 
 var questionArray = [{Question : "What is the closest planet to the Sun?" ,
                       answer1 : "Jupiter" , answer2 : "Titan",
@@ -72,10 +73,12 @@ var questionArray = [{Question : "What is the closest planet to the Sun?" ,
 var arrayIndex = 0;
 
 alertDiv.hide();
+
 /*--------------------------------This function reads the next question from the array--------------------------------------- */ 
 
 function nextQuestion(){
-  // debugger;
+  // 
+  
   var tempArray ="";
   var propertyArray = "";
 
@@ -83,7 +86,9 @@ function nextQuestion(){
           //read question from the object and assign to the question section
         $("#question").text(questionArray[arrayIndex].Question);
 
-        tempArray = questionArray[arrayIndex]; // coppy object to a temporary variable
+        // clone object to a variable. This way the object reference would not be copied
+
+        tempArray = jQuery.extend({}, questionArray[arrayIndex])
 
         delete tempArray.Question; // delete the question property from the object 
 
@@ -112,12 +117,10 @@ function nextQuestion(){
 /*----------------------------------This function will create the timer-------------------------------------------- */
 function createTimer(){
   
-  // if (!clockRunning) {
-      intervalId = setInterval(count,1000);
-      timeoutId = setTimeout(checkArray,30000);
-
-      clockRunning = true;
-    // }
+  
+      intervalId = setInterval(count,1000); // create timer interval
+      timeoutId = setTimeout(checkArray,30000); // create timeout for the count down
+      
 
   
 } ; //end createTimer
@@ -165,13 +168,11 @@ function checkArray(){
   var alertMessage = $("<p>");
   alertMessage.text("Out of Time, Correct answer is " + $(".answerButton[value = correctAnswer]").text());
   alertMessage.addClass("alertMessage");
-  // $("#alertSymbol").css('display','none');
+  
   $("#alertSymbol").hide();
-  // $("timeOutMsg").show();
+  
 
   alertDiv.append(alertMessage);
-  // alertMessage.text(alertMessage);
-  // alertMessage.show();
   alertDiv.show();
   $(".answerButton[value = correctAnswer]").css({"border-color":"Green" , "border-width" : "5px"});
   nextQuestionTimer();
@@ -181,7 +182,7 @@ function checkArray(){
 
 /*-------------------------------------------this function will clear all the timers------------------------------ */
 function clearTimer(){
-  debugger;
+  
   clearInterval(intervalId);
   clearTimeout(timeoutId);
   time = 30;
@@ -190,7 +191,7 @@ function clearTimer(){
 
 /*---------------------This function will populate the alter symbol based on the paramerter valiue------------------- */
 function ansAlert(altSymbol){
-debugger;
+
   var alertImage = $("#alertSymbol");
   // alertImage.css("visibility", "visible");
 
@@ -203,8 +204,7 @@ debugger;
     alertImage.attr("src","https://png2.kisspng.com/sh/836df75f93f4d860e96e369d83356764/L0KzQYm3V8A0N6NtR91yc4Pzfri0gBhzcaR5gdN3LXP1f8T6TgN6dZN0hJ9sb33zhcXskr1qa5Dzi59qbXX1ebTojr1zbZUyTdQ8Y0HoSbaCUcdlbmczTqUDMEW6Qoa4VcMxPmc7Tqc9NUm4SXB3jvc=/kisspng-christian-cross-symbol-computer-icons-american-red-5b3c1e9e917df6.6380572515306666545959.png"); 
   }
   $("#timer").text("00:00");
-  // $("#timeOutMsg").hide();
-  $(".alertMessage").detach();
+  $(".alertMessage").detach(); // remove the paragraph element from the div 
   alertImage.show();
   alertDiv.show();
   nextQuestionTimer();
@@ -263,7 +263,7 @@ function startPlay(){
 
 /**------------------------------------function on click answer buttons------------------------------------------- */
   $(".answerButton").click (function(){
-    debugger;
+    
     if ($(this).data('name') === 'correctAnswer') {
       $(this).css("border-color", "red");
       totalCorrect++;
@@ -283,6 +283,11 @@ function startPlay(){
   /*------------------------------------function on click play again button--------------------------------------- */
   $("#btnRestart").click(function(){
     arrayIndex = 0;
+    time = 30; // timer set to 30 seconds 
+    totalCorrect = 0;
+    totalWrong = 0;
+    totalUnAnswered = 0;
+
     $("#finalWindow").hide();
     startPlay();
   })
