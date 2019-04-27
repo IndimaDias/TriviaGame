@@ -6,6 +6,7 @@ $("#qContainer").hide();
 
 var intervalId ; //variable for setInterval
 var timeoutId  ; //variable for the timeOut
+var nextTimeout ; // timeout for next question generating 
 var clockRunning = false;
 var time = 30; // timer set to 30 seconds 
 var alertDiv = $("#alert");
@@ -20,11 +21,11 @@ var questionArray = [{Question : "What is the closest planet to the Sun?" ,
 
                     {Question : "What is the hottest planet in our solar system?" ,
                       answer1 : "Earth" , answer2 : 'Ganymede',
-                      answer3 : "Mercury", correctAnswer : "Venus", correctAns : 3 },
+                      answer3 : "Mercury", correctAnswer : "Venus" },
 
                     {Question : "What planet is famous for its big red spot on it?" ,
                       answer1 : "Saturn" , answer2 : 'Mars',
-                      answer3 : "Neptune", correctAnswer : "Jupiter", correctAns : 4 },
+                      answer3 : "Neptune", correctAnswer : "Jupiter" },
 
                     {Question : "What planet is famous for the beautiful rings that surround it?" ,
                       answer1 : "Jupiter" , answer2 : 'Venus',
@@ -92,19 +93,21 @@ function nextQuestion(){
 
 
     }
-    
+    else{
+      //populate final screen
+    }
     
 }; //end function nextQuestion
 
 /*----------------------------------This function will create the timer-------------------------------------------- */
 function createTimer(){
   
-  if (!clockRunning) {
+  // if (!clockRunning) {
       intervalId = setInterval(count,1000);
       timeoutId = setTimeout(checkArray,30000);
       console.log(intervalId);
       clockRunning = true;
-    }
+    // }
 
   
 } ; //end createTimer
@@ -144,30 +147,64 @@ function timeConverter(t) {
 
 /*--------------------------------------------This funciton will be excuted at the timeout------------------------- */
 function checkArray(){
+
+  clearTimer();
+  var alertMessage = $("<p>");
+  alertMessage.text("Out of Time, Correct answer is " + $(".answerButton[value = correctAnswer]").text());
+  alertMessage.addClass("alertMessage");
+  $("#alertSymbol").css('display','none');
+  console.log(alertMessage.text());
+  alertDiv.append(alertMessage);
+  alertDiv.show();
+  $(".answerButton[value = correctAnswer]").css({"border-color":"Green" , "border-width" : "5px"});
+  nextQuestionTimer();
+} //end function checkArray
+
+/*---------------------------------------------------------------------------------------------------------------- */
+
+/*-------------------------------------------this function will clear all the timers------------------------------ */
+function clearTimer(){
   clearInterval(intervalId);
   clearTimeout(timeoutId);
   time = 30;
   console.log("timeout");
-} //end function checkArray
+} //end function clearTimer
 
-/*---------------------------------------------------------------------------------------------------------------- */
-function AnsAlert(altSymbol){
+/*---------------------This function will populate the alter symbol based on the paramerter valiue------------------- */
+function ansAlert(altSymbol){
   debugger;
   var alertImage = $("#alertSymbol");
 
-  if (altSymbol === 'C'){
+  if (altSymbol === 'C'){ // correct answer
     
     console.log(alertImage.attr('src'));
     alertImage.attr("src","https://png2.kisspng.com/sh/b2c66ce9415cbfb6db545ba6dff5daba/L0KzQYm3U8AzN6d8iZH0aYP2gLBuTgN6dZN0hJ9yY3BxPbPzlfUufJpog598eX3lf720VfE6QWpmUaNtOEXkQYS1VMM5OmoAUak6NUKzQIK9UME4QGk7SpD5bne=/kisspng-symbol-icon-blue-tick-symbol-5a999a91d85a13.4382999715200160178862.png"); 
   }
-  else {
+  else { // incorrect answer
     alertImage.attr("src","https://png2.kisspng.com/sh/836df75f93f4d860e96e369d83356764/L0KzQYm3V8A0N6NtR91yc4Pzfri0gBhzcaR5gdN3LXP1f8T6TgN6dZN0hJ9sb33zhcXskr1qa5Dzi59qbXX1ebTojr1zbZUyTdQ8Y0HoSbaCUcdlbmczTqUDMEW6Qoa4VcMxPmc7Tqc9NUm4SXB3jvc=/kisspng-christian-cross-symbol-computer-icons-american-red-5b3c1e9e917df6.6380572515306666545959.png"); 
   }
 
   alertDiv.show();
+  nextQuestionTimer();
+  
+} // end function ansAlert
+
+/*--------------------------------------this function will create timer to populate the next question ------------ */
+function nextQuestionTimer(){
+  console.log("next Timer");
+  
+  nextTimeout = setTimeout(nextQuesTimeout,3000);
   
 }
 
+/*-------------------------------------Function executed after timeout-------------------------------------------- */
+function nextQuesTimeout(){
+  alertDiv.hide();
+  clearTimeout(nextTimeout);
+  createTimer();
+  nextQuestion();
+  arrayIndex++;
+}
 /*---------------------------------------function on click of the Play button--------------------------------------*/
   $("#play").click(function(){
       
@@ -184,14 +221,15 @@ function AnsAlert(altSymbol){
     
     if ($(this).data('name') === 'correctAnswer') {
       $(this).css("border-color", "red");
-      checkArray();
-      AnsAlert('C');
+      clearTimer();
+      ansAlert('C');
       console.log("Correct");
     }
     else {
       
       $(".answerButton[value = correctAnswer]").css({"border-color":"Green" , "border-width" : "5px"});
-      AnsAlert('W');
+      clearTimer();
+      ansAlert('W');
       console.log("Incorrect");
     }
   });
