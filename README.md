@@ -1,7 +1,7 @@
 # TriviaGame
 **Timed Trivia Game**
 
-###**About**
+### About
 The main purpose of this project is to develop a trivia game using the timers. The theme of this game is **Space**.
 
 This game will present 13 questions to the user, giving 30 seconds to answer each question. When user has finished answering all the questions it will display the users results. User has the option to start the game again. 
@@ -10,10 +10,10 @@ If the answer is correct user would be notified with the check marked alert.
 If the answer is incorrect user would be notified with the cross check and the correct answer would be highlighted with  a green border
 
 
-###**Use**
+### Use
 This game will help user to test his/her knowledge in the subject area of space science
 
-###**Steps**
+### Steps
 	* Game starts when the **Play** button is pressed 
 	* Each question has 30 seconds to answer
 	* Game will check the answer selected and alert the user and navigate to the next question
@@ -50,7 +50,11 @@ This game will help user to test his/her knowledge in the subject area of space 
 	* Present set of new random question in every new game
 	* Have diffrent categories
 	* Multiplayer option
+
+	
 ** This project is maintained by Indima Dias. 
+
+
 
 
 
