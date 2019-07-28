@@ -198,10 +198,10 @@ function ansAlert(altSymbol){
   if (altSymbol === 'C'){ // correct answer
     
     
-    alertImage.attr("src","https://png2.kisspng.com/sh/b2c66ce9415cbfb6db545ba6dff5daba/L0KzQYm3U8AzN6d8iZH0aYP2gLBuTgN6dZN0hJ9yY3BxPbPzlfUufJpog598eX3lf720VfE6QWpmUaNtOEXkQYS1VMM5OmoAUak6NUKzQIK9UME4QGk7SpD5bne=/kisspng-symbol-icon-blue-tick-symbol-5a999a91d85a13.4382999715200160178862.png"); 
+    alertImage.attr("src","assets/images/kisspng-symbol-icon-blue-tick-symbol-5a999a91d85a13.4382999715200160178862.png"); 
   }
   else { // incorrect answer
-    alertImage.attr("src","https://png2.kisspng.com/sh/836df75f93f4d860e96e369d83356764/L0KzQYm3V8A0N6NtR91yc4Pzfri0gBhzcaR5gdN3LXP1f8T6TgN6dZN0hJ9sb33zhcXskr1qa5Dzi59qbXX1ebTojr1zbZUyTdQ8Y0HoSbaCUcdlbmczTqUDMEW6Qoa4VcMxPmc7Tqc9NUm4SXB3jvc=/kisspng-christian-cross-symbol-computer-icons-american-red-5b3c1e9e917df6.6380572515306666545959.png"); 
+    alertImage.attr("src","assets/images/kisspng-christian-cross-computer-icons-clip-art-tick-and-cross-5aad4b8ff11030.6290340215213065119874.png"); 
   }
   $("#timer").text("00:00");
   $(".alertMessage").detach(); // remove the paragraph element from the div 
